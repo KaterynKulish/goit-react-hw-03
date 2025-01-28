@@ -1,6 +1,6 @@
 import s from './Contact.module.css';
 
-const Contact = ({ contact, handleDelete, filteredContacts }) => {
+const Contact = ({ contact, handleDelete }) => {
   return (
     <>
       <div className={s.text}>

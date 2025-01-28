@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ContactForm from './components/ContactForm/ContactForm';
 import ContactList from './components/ContactList/ContactList';
 import SearchBox from './components/SearchBox/SearchBox';
 
 const App = () => {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(
+    () => JSON.parse(localStorage.getItem('contacts')) ?? []
+  );
 
   const handleAddContact = newContact => {
     setContacts(prev => [newContact, ...prev]);
@@ -15,25 +17,26 @@ const App = () => {
     setContacts(newListContacts);
   };
 
-  const { filtered, setFiltered } = useState([]);
-  const handleSearch = values => {
-    const filteredContacts = contacts.filter(
-      contact => values === contact.name
-    );
-    setFiltered(filteredContacts);
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
+
+  const [filtered, setFiltered] = useState('');
+
+  const handleSearch = e => {
+    const value = e.target.value;
+    setFiltered(value);
   };
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filtered.toLowerCase())
+  );
 
   return (
     <>
       <h1>Phonebook</h1>
       <ContactForm addContact={handleAddContact} />
-      <SearchBox handleSearch={handleSearch} />
-      <ContactList
-        contacts={contacts}
-        // filteredContacts={filteredContacts}
-        handleDelete={handleDelete}
-        filtered={filtered}
-      />
+      <SearchBox handleSearch={handleSearch} filtered={filtered} />
+      <ContactList contacts={filteredContacts} handleDelete={handleDelete} />
     </>
   );
 };

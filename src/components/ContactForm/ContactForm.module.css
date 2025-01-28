@@ -9,3 +9,8 @@
   width: 200px;
   /* text-align: left; */
 }
+
+.error {
+  color: red;
+  font-size: 8px;
+}

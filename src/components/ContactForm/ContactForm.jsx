@@ -17,8 +17,7 @@ const ContactForm = ({ addContact }) => {
     actions.resetForm();
   };
 
-  const re =
-    /^\+?\d{ 1, 4 } [-.\s] ?\(?\d{ 1, 4 } \)?[-.\s] ?\d{ 1, 4 } [-.\s] ?\d{ 1, 9 } $/;
+  const re = /^\+?\d{1,4}[-.\s]?\d{10,15}$/;
 
   const applySchema = Yup.object().shape({
     name: Yup.string().required('Required!').min('2', 'Min 2 символи'),
